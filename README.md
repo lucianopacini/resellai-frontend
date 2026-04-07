@@ -1,16 +1,57 @@
-# React + Vite
+# 🎨 LookBook AI – Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Frontend dell’applicazione **LookBook AI**, che permette agli utenti di inserire i dati di un capo di abbigliamento e ottenere una valutazione tramite intelligenza artificiale.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 🚀 Tecnologie utilizzate
+- React  
+- Vite  
+- JavaScript  
+- CSS  
 
-## React Compiler
+---
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## ⚙️ Funzionalità principali
 
-## Expanding the ESLint configuration
+### 📥 Inserimento dati
+- categoria  
+- brand  
+- stato  
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### 🔄 Comunicazione con backend
+- Invio richiesta POST all’endpoint `/valuta`  
+
+### 📊 Visualizzazione risultati
+- prezzo suggerito  
+- range di prezzo  
+- motivazione  
+- consigli di vendita  
+
+---
+
+## 🔗 Collegamento al backend
+Il frontend comunica con il backend deployato su Render tramite chiamate API.
+
+---
+
+## 🌐 Demo live
+👉 https://lookbook-frontend.vercel.app/
+
+---
+
+## 📌 Come funziona
+1. L’utente inserisce i dati nel form  
+2. Il frontend invia una richiesta POST al backend (`/valuta`)  
+3. Il backend elabora i dati con AI  
+4. Il frontend mostra il risultato  
+
+---
+
+## 👨‍💻 Autore
+🦁 **Luciano Pacini**
+
+---
+
+## 📌 Note
+Questo progetto rappresenta una prima applicazione full stack con integrazione tra frontend, backend, AI e database.

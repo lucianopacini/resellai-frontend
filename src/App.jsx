@@ -1,4 +1,6 @@
 import { useState, useRef, useEffect } from "react";
+import ResultCard from "./components/ResultCard";
+import { evaluateItem } from "./services/api";
 import './App.css';
 
 function App() {
@@ -22,7 +24,7 @@ function App() {
   // 🔹 IMMAGINE UPLOAD
   // -----------------------------
   const [image, setImage] = useState(null);
-
+  const fileRef = useRef(null);
   // -----------------------------
   // 🔹 AUTOCOMPLETE BRAND
   // -----------------------------
@@ -49,6 +51,7 @@ function App() {
   const resultRef = useRef(null);
   const brandRef = useRef(null);
   const listRef = useRef(null);
+  const historyRef = useRef(null);
 
   // -----------------------------
   // 🔹 CHIUDI AUTOCOMPLETE SE CLICCHI FUORI
@@ -72,26 +75,14 @@ function App() {
     };
   }, []);
 
+  // STORICO
+  const [showHistory, setShowHistory] = useState(false);
+  const [history, setHistory] = useState([]);
+
   // -----------------------------
   // 🔹 RESET FORM
   // -----------------------------
-  const handleReset = () => {
-    setCategoria("");
-    setBrand("");
-    setStato("");
-    setTaglia("");
-    setRisposta(null);
-    setErroreInput("");
-    setFilteredBrands([]);
-    setImage(null);
-  };
-
-  // -----------------------------
-  // 🔹 INVIO DATI AL BACKEND
-  // -----------------------------
   const handleSubmit = async () => {
-
-    // validazione base
     if (!categoria.trim() || !brand.trim() || !stato || !taglia) {
       setErroreInput("Compila tutti i campi");
       return;
@@ -101,29 +92,48 @@ function App() {
     setLoading(true);
 
     try {
-      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/valuta`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ categoria, brand, stato, taglia }),
+      const data = await evaluateItem({
+        categoria,
+        brand,
+        stato,
+        taglia,
       });
 
-      if (!res.ok) throw new Error("Errore backend");
-
-      const data = await res.json();
       setRisposta(data);
 
-    } catch (err) {
-      console.error(err);
-      setRisposta({ error: "Errore con il backend" });
+      // 👉 SPOSTATO QUI DENTRO
+      setHistory((prev) => [
+        {
+          categoria,
+          brand,
+          prezzo: data.suggested_price,
+        },
+        ...prev
+      ]);
 
+    } catch (err) {
+      setRisposta({ error: "Errore con il backend" });
     } finally {
       setLoading(false);
     }
 
-    // scroll automatico risultato
     setTimeout(() => {
       resultRef.current?.scrollIntoView({ behavior: "smooth" });
     }, 100);
+  };
+
+  const handleReset = () => {
+    setCategoria("");
+    setBrand("");
+    setStato("");
+    setTaglia("");
+    setRisposta(null);
+    setErroreInput("");
+    setFilteredBrands([]);
+    setImage(null);
+    if (fileRef.current) {
+      fileRef.current.value = "";
+    }
   };
 
   // -----------------------------
@@ -131,10 +141,14 @@ function App() {
   // -----------------------------
   return (
     <div style={{ padding: "20px" }}>
-      <h1>Sono il grande Luciano</h1>
+      <h1>👖ResellAI👕</h1>
+      <p className="subtitle">
+        Smarter resale pricing powered by AI
+      </p>
 
       {/* UPLOAD IMMAGINE */}
       <input
+        ref={fileRef}
         type="file"
         accept="image/*"
         onChange={(e) => {
@@ -229,60 +243,72 @@ function App() {
         </button>
       </div>
 
+      <div className="history-toggle">
+        <button
+          onClick={() => {
+            const newState = !showHistory;
+            setShowHistory(newState);
+
+            if (!showHistory) {
+              setTimeout(() => {
+                historyRef.current?.scrollIntoView({ behavior: "smooth" });
+              }, 100);
+            }
+          }}
+          className="reset-btn"
+        >
+          📜 {showHistory ? "Nascondi storico" : "Mostra storico"}
+        </button>
+      </div>
+
+
       {/* ERRORI */}
       {erroreInput && <p className="error">{erroreInput}</p>}
 
       {/* LOADING */}
-      {loading && <p className="loader">⏳ Sto valutando...</p>}
+      {
+        loading && (
+          <div style={{ textAlign: "center" }}>
+            <div className="spinner"></div>
+            <p className="loader">Analisi in corso...</p>
+          </div>
+        )
+      }
+
+      {
+        showHistory && history.length > 0 && (
+          <div ref={historyRef} className="history-container">
+            <h3>📦 Storico valutazioni</h3>
+
+            {history.map((item, index) => (
+              <div key={index} className="history-item">
+                🧾 {item.brand} / {item.categoria} → €{item.prezzo}
+              </div>
+            ))}
+
+            <button
+              onClick={() => setHistory([])}
+              className="reset-btn"
+              style={{ marginTop: "10px" }}
+            >
+              🗑️ Svuota storico
+            </button>
+          </div>
+        )
+      }
 
       {/* RISULTATO AI */}
-      {risposta && !loading && (
-        <div className="results-container">
+      {
+        risposta && !loading && (
+          <ResultCard
+            risposta={risposta}
+            image={image}
+            resultRef={resultRef}
+          />
+        )
+      }
 
-          {risposta.error ? (
-            <p className="error">{risposta.error}</p>
-          ) : (
-            <div ref={resultRef} className="result-card fade-in">
-
-              {/* IMMAGINE */}
-              {image && (
-                <div className="image-preview">
-                  <img src={image} alt="Preview" />
-                </div>
-              )}
-
-              {/* PREZZO */}
-              <p className="prezzo">
-                💰 <strong>Prezzo:</strong> €{risposta.suggested_price}
-              </p>
-
-              {/* RANGE */}
-              <p className="range">
-                📊 <strong>Range:</strong> €{risposta.range.min} - €{risposta.range.max}
-              </p>
-
-              {/* MOTIVAZIONE */}
-              <div className="motivazione">
-                <strong>📝 Motivazione:</strong>
-                <p>{risposta.motivation}</p>
-              </div>
-
-              {/* CONSIGLI */}
-              <div className="consigli">
-                <strong>💡 Consigli:</strong>
-                <ul>
-                  {risposta?.selling_tips?.map((tip, index) => (
-                    <li key={index}>{tip}</li>
-                  ))}
-                </ul>
-              </div>
-
-            </div>
-          )}
-
-        </div>
-      )}
-    </div>
+    </div >
   );
 }
 

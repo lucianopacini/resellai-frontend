@@ -12,6 +12,7 @@ function App() {
   const [brand, setBrand] = useState("");
   const [stato, setStato] = useState("");
   const [taglia, setTaglia] = useState("");
+  const [genere, setGenere] = useState("");
 
   // -----------------------------
   // 🔹 RISPOSTA AI + UI STATE
@@ -86,7 +87,7 @@ function App() {
   // 🔹 RESET FORM
   // -----------------------------
   const handleSubmit = async () => {
-    if (!categoria.trim() || !brand.trim() || !stato || !taglia) {
+    if (!categoria.trim() || !brand.trim() || !stato || !taglia || !genere) {
       setErroreInput("Compila tutti i campi");
       return;
     }
@@ -134,6 +135,7 @@ function App() {
     setErroreInput("");
     setFilteredBrands([]);
     setImage(null);
+    setGenere("");
     if (fileRef.current) {
       fileRef.current.value = "";
     }
@@ -149,6 +151,8 @@ function App() {
   return (
     <div style={{ padding: "20px" }}>
       <h1>👖ResellAI👕</h1>
+      {/* ERRORI */}
+      {erroreInput && <p className="error">{erroreInput}</p>}
       <p className="subtitle">
         Smarter resale pricing powered by AI
       </p>
@@ -217,8 +221,22 @@ function App() {
         </ul>
       )}
 
+      {/* GENERE */}
+      <select className={erroreInput && !genere ? "input-error" : ""}
+        value={genere}
+        onChange={(e) => setGenere(e.target.value)}
+      >
+        <option value="">Seleziona genere</option>
+        <option value="uomo">👨 Uomo</option>
+        <option value="donna">👩 Donna</option>
+      </select>
+
       {/* TAGLIA */}
-      <select value={taglia} onChange={(e) => setTaglia(e.target.value)}>
+      <select
+        className={erroreInput && !taglia ? "input-error" : ""}
+        value={taglia}
+        onChange={(e) => setTaglia(e.target.value)}
+      >
         <option value="">Seleziona taglia</option>
         <option value="XS">📏 XS</option>
         <option value="S">📏 S</option>
@@ -229,7 +247,10 @@ function App() {
       </select>
 
       {/* STATO */}
-      <select value={stato} onChange={(e) => setStato(e.target.value)}>
+      <select className={erroreInput && !stato ? "input-error" : ""}
+        value={stato}
+        onChange={(e) => setStato(e.target.value)}
+      >
         <option value="">Seleziona stato</option>
         <option value="come_nuovo">🆕 Come Nuovo</option>
         <option value="ottimo">✨ Ottimo</option>
@@ -283,20 +304,15 @@ function App() {
         </button>
       </div> */}
 
-
-
-      {/* ERRORI */}
-      {erroreInput && <p className="error">{erroreInput}</p>}
-
       {/* LOADING */}
-      {
-        loading && (
-          <div style={{ textAlign: "center" }}>
+      {loading && (
+        <div className="overlay">
+          <div className="overlay-content">
             <div className="spinner"></div>
-            <p className="loader">Analisi in corso...</p>
+            <p>Analisi in corso...</p>
           </div>
-        )
-      }
+        </div>
+      )}
 
       {
         showHistory && history.length > 0 && (

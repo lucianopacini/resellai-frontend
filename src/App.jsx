@@ -30,6 +30,9 @@ function App() {
   // -----------------------------
   const brandsList = [
     "Adidas",
+    "Armani",
+    "Diesel",
+    "Guess",
     "Nike",
     "Puma",
     "Zara",
@@ -134,6 +137,10 @@ function App() {
     if (fileRef.current) {
       fileRef.current.value = "";
     }
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
   };
 
   // -----------------------------
@@ -245,6 +252,21 @@ function App() {
 
       <div className="history-toggle">
         <button
+          onClick={() => setShowHistory(!showHistory)}
+          className="reset-btn"
+        >
+          📜 {showHistory ? "Nascondi storico" : "Mostra storico"}
+
+          {showHistory && history.length === 0 && (
+            <p className="empty-history">
+              📭 Nessuna valutazione ancora
+            </p>
+          )}
+        </button>
+      </div>
+
+      {/* <div className="history-toggle">
+        <button
           onClick={() => {
             const newState = !showHistory;
             setShowHistory(newState);
@@ -259,7 +281,8 @@ function App() {
         >
           📜 {showHistory ? "Nascondi storico" : "Mostra storico"}
         </button>
-      </div>
+      </div> */}
+
 
 
       {/* ERRORI */}

@@ -126,7 +126,7 @@ select:focus {
   align-items: center;
   /* 👈 QUESTO È IL PUNTO CHIAVE */
   gap: 12px;
-  margin-top: 20px;
+  /* margin-top: 20px; */
 }
 
 .spinner {
@@ -343,6 +343,14 @@ button:disabled {
   display: flex;
   justify-content: center;
   margin-top: 15px;
+}
+
+.empty-history {
+  text-align: center;
+  color: #888;
+  margin-top: 15px;
+  font-style: italic;
+  font-size: 14px;
 }
 
 /* Responsive */

@@ -122,7 +122,10 @@ function App() {
     }
 
     setTimeout(() => {
-      resultRef.current?.scrollIntoView({ behavior: "smooth" });
+      resultRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "center"
+      });
     }, 100);
   };
 
@@ -262,47 +265,36 @@ function App() {
 
       {/* BOTTONI */}
       <div className="buttons-container">
+
+        {/* VALUTA (principale) */}
         <button className="btn-primary" onClick={handleSubmit} disabled={loading}>
           {loading ? "⏳ Attendi..." : "Valuta"}
         </button>
 
-        <button onClick={handleReset} className="reset-btn">
-          🔄 Reset
-        </button>
+        {/* BOTTONI SECONDARI */}
+        <div className="secondary-buttons">
+
+          <button onClick={handleReset} className="reset-btn">
+            🔄 Reset
+          </button>
+
+          <button
+            onClick={() => setShowHistory(!showHistory)}
+            className="reset-btn"
+          >
+            📜 {showHistory ? "Nascondi storico" : "Mostra storico"}
+          </button>
+
+        </div>
+
       </div>
 
-      <div className="history-toggle">
-        <button
-          onClick={() => setShowHistory(!showHistory)}
-          className="reset-btn"
-        >
-          📜 {showHistory ? "Nascondi storico" : "Mostra storico"}
-
-          {showHistory && history.length === 0 && (
-            <p className="empty-history">
-              📭 Nessuna valutazione ancora
-            </p>
-          )}
-        </button>
-      </div>
-
-      {/* <div className="history-toggle">
-        <button
-          onClick={() => {
-            const newState = !showHistory;
-            setShowHistory(newState);
-
-            if (!showHistory) {
-              setTimeout(() => {
-                historyRef.current?.scrollIntoView({ behavior: "smooth" });
-              }, 100);
-            }
-          }}
-          className="reset-btn"
-        >
-          📜 {showHistory ? "Nascondi storico" : "Mostra storico"}
-        </button>
-      </div> */}
+      {/* MESSAGGIO STORICO VUOTO */}
+      {showHistory && history.length === 0 && (
+        <p className="empty-history">
+          📭 Nessuna valutazione ancora
+        </p>
+      )}
 
       {/* LOADING */}
       {loading && (

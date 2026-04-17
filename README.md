@@ -1,65 +1,128 @@
-# 🎨 LookBook AI – Frontend
+<!-- # 🎨 LookBook AI – Frontend
 
 [![Frontend Live](https://img.shields.io/badge/frontend-live-brightgreen)](https://lookbook-frontend.vercel.app/)
 
-Frontend dell’applicazione **LookBook AI**, che permette agli utenti di inserire i dati di un capo di abbigliamento e ottenere una valutazione tramite intelligenza artificiale.
+Frontend dell’applicazione **LookBook AI**, che permette agli utenti di inserire i dati di un capo di abbigliamento e ottenere una valutazione tramite intelligenza artificiale. -->
+
+# 👖 ResellAI Frontend 👕
+
+Applicazione web sviluppata con React che permette di stimare il prezzo di capi di abbigliamento usati tramite intelligenza artificiale.
+
+L’utente inserisce le informazioni del prodotto e riceve una valutazione dinamica con prezzo, range e consigli di vendita.
 
 ---
 
-## 🚀 Tecnologie utilizzate
-- React  
-- Vite  
-- JavaScript  
-- CSS  
+## 🚀 Demo Live
+
+👉 https://resellai-frontend.vercel.app/
+
+⚠️ Il primo caricamento potrebbe richiedere qualche secondo (Render free tier)
 
 ---
 
-## ⚙️ Funzionalità principali
+## 📸 Screenshot
 
-### 📥 Inserimento dati
-- categoria  
-- brand  
-- stato  
+### 🏠 Inserimento prodotto
 
-### 🔄 Comunicazione con backend
-- Invio richiesta POST all’endpoint `/valuta`  
+![Form UI](./screenshot-home.png)
 
-### 📊 Visualizzazione risultati
-- prezzo suggerito  
-- range di prezzo  
-- motivazione  
-- consigli di vendita  
+### 🤖 Risultato AI
+
+![AI Result](./screenshot-result.png)
 
 ---
 
-## 🔗 Collegamento al backend
-Il frontend comunica con il backend deployato su Render tramite chiamate API:  
-[Backend Live su Render](https://lookbook-backend-uxi1.onrender.com/)  
+## 🧰 Tecnologie utilizzate
 
-📂 Il codice del backend è disponibile qui: [GitHub Backend](https://github.com/tuo-username/lookbook-backend)
----
-
-## 📸 Preview
-![LookBook AI Screenshot](./screenshot-lookbook.png)
-
----
-## 🌐 Demo live
-👉 https://lookbook-frontend.vercel.app/
+- React
+- Vite
+- JavaScript (ES6+)
+- CSS3
+- REST API custom (Node.js + Express backend)
+- OpenAI API
 
 ---
 
-## 📌 Come funziona
-1. L’utente inserisce i dati nel form  
-2. Il frontend invia una richiesta POST al backend (`/valuta`)  
-3. Il backend elabora i dati con AI  
-4. Il frontend mostra il risultato  
+## ✨ Funzionalità principali
+
+- 🔍 Valutazione prezzo tramite AI  
+- 🧠 Motivazione e consigli di vendita  
+- 🖼️ Upload immagine con preview  
+- ⚡ Spinner di caricamento con overlay  
+- 📜 Storico valutazioni (con possibilità di svuotarlo)  
+- 🔎 Autocomplete per brand  
+- ✅ Validazione campi con feedback visivo  
+- 📱 UI semplice e responsive  
 
 ---
 
-## 👨‍💻 Autore
-🦁 **Luciano Pacini**
+## 🧠 Come funziona
+
+1. Frontend raccoglie input utente  
+2. Invia POST /valuta al backend 
+3. Backend chiama OpenAI API
+4. Backend salva su Supabase 
+5. Frontend renderizza risultato
 
 ---
 
-## 📌 Note
-Questo progetto rappresenta una prima applicazione full stack con integrazione tra frontend, backend, AI e database.
+## 📂 Struttura del progetto
+```
+vite-project/
+│
+├── src/
+│ ├── components/
+│ │ └── ResultCard.jsx
+│ ├── services/
+│ │ └── api.js
+│ ├── App.jsx
+│ ├── App.css
+│ └── main.jsx
+│
+├── index.html
+└── package.json
+```
+---
+
+## ⚙️ Installazione
+
+
+npm install
+
+
+---
+
+## ▶️ Avvio in locale
+
+
+npm run dev
+
+
+App disponibile su:
+
+
+http://localhost:5173
+
+
+---
+
+## 🔗 Connessione Backend
+
+Il frontend comunica con il backend tramite variabile d’ambiente:
+
+
+VITE_BACKEND_URL=https://resellai-backend.onrender.com
+
+---
+
+## 🌐 Deploy
+
+- Frontend deployato su Vercel  
+- Backend su Render  
+
+---
+
+## ✨ Autore
+
+Luciano Pacini
+🦁Fullstack in crescita

@@ -122,11 +122,10 @@ select:focus {
 
 .buttons-container {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  /* 👈 QUESTA È LA CHIAVE */
   align-items: center;
-  /* 👈 QUESTO È IL PUNTO CHIAVE */
   gap: 12px;
-  /* margin-top: 20px; */
 }
 
 .spinner {
@@ -247,6 +246,11 @@ button:disabled {
   margin-top: 20px;
 }
 
+.secondary-buttons {
+  display: flex;
+  gap: 10px;
+}
+
 /* Card singola dei risultati */
 .result-card {
   background: #ffffff;
@@ -279,6 +283,7 @@ button:disabled {
 .result-card .range {
   text-align: center;
   font-size: 16px;
+  opacity: 0.8;
 }
 
 /* Motivazione e Consigli */
